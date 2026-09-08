@@ -1,7 +1,9 @@
-/* RVSE LLC — interactions: scroll reveal, sticky nav state, mobile menu */
+/* RVSE LLC — interactions: scroll reveal, pill nav, mobile menu */
 
 (function () {
   'use strict';
+
+  document.documentElement.classList.add('js');
 
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -46,13 +48,13 @@
     });
   }
 
-  /* ── sticky nav hairline ───────────────────────────────── */
+  /* ── nav: transparent → floating pill ──────────────────── */
   var nav = document.getElementById('nav');
 
   if (nav) {
     var ticking = false;
     var syncNav = function () {
-      nav.classList.toggle('is-stuck', window.scrollY > 8);
+      nav.classList.toggle('is-pill', window.scrollY > 24);
       ticking = false;
     };
     window.addEventListener('scroll', function () {
