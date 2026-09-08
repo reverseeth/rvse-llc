@@ -17,6 +17,11 @@
   --muted:        #758084;
   --mist:         #9aaeb5;
 
+  /* small mono labels — darker/lighter than --muted so 11-13px type
+     clears 4.5:1 on paper and on night */
+  --label:        #64747a;   /* 4.67:1 on --paper */
+  --label-night:  #8b9aa0;   /* 5.88:1 on --night */
+
   /* lines */
   --line:         #e3e8ea;
   --line-strong:  #cddbe1;
@@ -141,7 +146,7 @@ ol, ul { padding: 0; list-style: none; }
   font-weight: 500;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--label);
   line-height: 1.4;
 }
 .section--dark .eyebrow { color: var(--mist); }
@@ -418,7 +423,7 @@ ol, ul { padding: 0; list-style: none; }
   font-weight: 500;
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--label);
   padding-top: .3rem;
 }
 .facts dd { margin: 0; font-size: 1.6rem; letter-spacing: -.015em; }
@@ -487,7 +492,7 @@ ol, ul { padding: 0; list-style: none; }
   font-size: 1.3rem;
   font-weight: 500;
   letter-spacing: .1em;
-  color: var(--mist);
+  color: var(--label);
   padding-top: .8rem;
 }
 .step__text {
@@ -542,7 +547,7 @@ ol, ul { padding: 0; list-style: none; }
   font-size: 1.2rem;
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--label-night);
 }
 
 /* ── footer ────────────────────────────────────────────────── */
@@ -581,7 +586,7 @@ ol, ul { padding: 0; list-style: none; }
   font-weight: 500;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--label-night);
   margin-bottom: 1.4rem;
 }
 .footer__line {
@@ -609,7 +614,7 @@ ol, ul { padding: 0; list-style: none; }
   font-size: 1.1rem;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--label-night);
 }
 
 /* ── reveal ────────────────────────────────────────────────── */
