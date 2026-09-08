@@ -60,6 +60,7 @@ body {
   letter-spacing: -.008em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
   overflow-x: hidden;
 }
 
@@ -149,11 +150,25 @@ ol, ul { padding: 0; list-style: none; }
 .section--dark .eyebrow, .hero .eyebrow { color: var(--w-50); }
 
 .dot {
+  position: relative;
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: currentColor;
   flex: none;
+}
+.dot::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  opacity: 0;
+  animation: dot-pulse 3.2s var(--e-quint) infinite;
+}
+@keyframes dot-pulse {
+  0%       { opacity: .6; transform: scale(.35); }
+  60%, 100% { opacity: 0;  transform: scale(1.5); }
 }
 
 /* two-tone, line-masked headlines (QOVES: white + 70% white) */
@@ -216,7 +231,7 @@ html.js .is-in .line:nth-child(2) .line__in { transition-delay: calc(var(--delay
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
-  transition: background .3s, color .3s, border-color .3s;
+  transition: background .3s, color .3s, border-color .3s, transform .3s var(--e-expo);
 }
 .btn svg { transition: transform .45s var(--e-expo); }
 .btn:hover svg { transform: translateX(4px); }
@@ -338,6 +353,16 @@ html.js .is-in .line:nth-child(2) .line__in { transition-delay: calc(var(--delay
   border-radius: var(--r-md);
 }
 .nav__menu a:hover { background: rgba(255, 255, 255, .10); color: var(--white); }
+.nav__menu a { animation: menu-item-in .55s var(--e-expo) backwards; }
+.nav__menu a:nth-child(1) { animation-delay: .06s; }
+.nav__menu a:nth-child(2) { animation-delay: .11s; }
+.nav__menu a:nth-child(3) { animation-delay: .16s; }
+.nav__menu a:nth-child(4) { animation-delay: .21s; }
+
+@keyframes menu-item-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
 
 @keyframes menu-in {
   from { opacity: 0; transform: translateY(-10px); }
@@ -770,11 +795,78 @@ html.js .reveal--lines { opacity: 1; transform: none; transition: none; }
   .footer__base { flex-direction: column; gap: .8rem; }
 }
 
+/* ── touch choreography (mobile: scroll takes over from hover) ─ */
+
+@media (hover: none) {
+  /* elements light up as they cross the middle of the screen */
+  .card.is-focus {
+    transform: translateY(-6px);
+    border-color: var(--line-dark);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, .08);
+  }
+  .card.is-focus .card__art { background: var(--white); }
+  .card.is-focus .card__art svg { transform: translateY(-3px) scale(1.03); }
+
+  .step.is-focus {
+    transform: translateY(-3px);
+    border-color: var(--line-dark);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, .06);
+  }
+  .step.is-focus .step__no {
+    background: var(--black);
+    border-color: var(--black);
+    color: var(--white);
+  }
+
+  /* press feedback */
+  .btn:active { transform: scale(.96); }
+  .card:active { transform: translateY(-6px) scale(.985); }
+  .contact__mail:active svg { transform: translateX(5px); }
+}
+
+@media (max-width: 860px) {
+  /* nav slips away scrolling down, returns scrolling up */
+  .nav { transition: transform .55s var(--e-expo); }
+  .nav.is-away { transform: translateY(-130%); }
+
+  /* headline lines settle with a slight editorial rotation */
+  html.js .line__in {
+    transform: translateY(118%) rotate(2.5deg);
+    transform-origin: 0 100%;
+  }
+  html.js .is-in .line__in { transform: none; }
+}
+
+/* scroll-driven touches where the engine exists (iOS 18.2+/Chrome) */
+@supports (animation-timeline: view()) {
+  @media (hover: none) {
+    .footer__mark {
+      animation: mark-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 50%;
+    }
+    .contact__panel.is-in {
+      animation: panel-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 90%;
+    }
+  }
+}
+@keyframes mark-rise {
+  from { opacity: 0;   transform: translateY(9%) scale(.985); }
+  to   { opacity: .14; transform: none; }
+}
+@keyframes panel-rise {
+  from { transform: translateY(3.2rem); }
+  to   { transform: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   html.js .reveal, html.js .line__in { opacity: 1; transform: none; transition: none; }
   html.js .card.reveal:not(.is-in) .card__art :is(path, circle, line, rect) { stroke-dashoffset: 0; }
-  .ticker__track, .hero__glow, .nav__menu { animation: none; }
+  .ticker__track, .hero__glow, .nav__menu, .nav__menu a, .dot::after,
+  .footer__mark, .contact__panel.is-in { animation: none; }
   *, *::before, *::after {
     animation-duration: .01ms !important;
     transition-duration: .01ms !important;
