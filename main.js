@@ -48,6 +48,38 @@
     });
   }
 
+  /* ── ticker: clone groups so the -50% loop never runs dry ─ */
+  var track = document.querySelector('.ticker__track');
+
+  if (track && !reduce) {
+    var buildTicker = function () {
+      var groupEl = track.firstElementChild;
+      if (!groupEl) return;
+      var groupW = groupEl.getBoundingClientRect().width;
+      var hostW = track.parentElement.getBoundingClientRect().width;
+      if (!groupW || !hostW) return;
+
+      /* one half of the track must be at least as wide as the host */
+      var perHalf = Math.max(1, Math.ceil(hostW / groupW));
+      var total = perHalf * 2;
+      while (track.children.length < total) track.appendChild(groupEl.cloneNode(true));
+      while (track.children.length > total) track.removeChild(track.lastElementChild);
+
+      /* constant speed (~70px/s) whatever the width */
+      track.style.animationDuration = ((groupW * perHalf) / 70).toFixed(2) + 's';
+    };
+
+    buildTicker();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildTicker);
+    window.addEventListener('load', buildTicker);
+
+    var tickerRaf = 0;
+    window.addEventListener('resize', function () {
+      window.cancelAnimationFrame(tickerRaf);
+      tickerRaf = window.requestAnimationFrame(buildTicker);
+    });
+  }
+
   /* ── nav: transparent → floating pill ──────────────────── */
   var nav = document.getElementById('nav');
 

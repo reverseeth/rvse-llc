@@ -403,7 +403,6 @@ html.js .is-in .line:nth-child(2) .line__in { transition-delay: calc(var(--delay
 .ticker__track {
   display: flex;
   align-items: center;
-  gap: 3.6rem;
   width: max-content;
   animation: slide 44s linear infinite;
   font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -412,6 +411,12 @@ html.js .is-in .line:nth-child(2) .line__in { transition-delay: calc(var(--delay
   letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--w-50);
+}
+.ticker__group {
+  display: flex;
+  align-items: center;
+  gap: 3.6rem;
+  padding-right: 3.6rem;   /* keeps spacing uniform across the -50% seam */
 }
 .ticker__sep { color: rgba(255, 255, 255, .22); font-size: .9rem; }
 
