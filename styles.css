@@ -499,10 +499,31 @@ html.js .is-in .line:nth-child(2) .line__in { transition-delay: calc(var(--delay
   overflow: hidden;
   transition: transform .7s var(--e-expo), border-color .4s, box-shadow .7s var(--e-expo);
 }
+
+/* tonal wash, QOVES-style: covers the whole card, fades in on hover /
+   scroll focus; colors come from per-card --wash-* custom properties */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .5s ease-in-out;
+  background:
+    radial-gradient(95% 75% at 82% -6%, var(--wash-deep) 0%, rgba(255, 255, 255, 0) 62%),
+    radial-gradient(130% 95% at 8% 18%, var(--wash-mid) 0%, rgba(255, 255, 255, 0) 58%),
+    linear-gradient(180deg, var(--wash-base) 0%, rgba(255, 255, 255, 0) 92%);
+}
 .card:hover {
   transform: translateY(-6px);
   border-color: var(--line-dark);
   box-shadow: 0 24px 48px rgba(0, 0, 0, .08);
+}
+.card:hover::before { opacity: 1; }
+.card:hover .card__art {
+  background: transparent;
+  border-bottom-color: rgba(10, 10, 10, .06);
 }
 
 .card__art {
@@ -512,9 +533,8 @@ html.js .is-in .line:nth-child(2) .line__in { transition-delay: calc(var(--delay
   place-items: center;
   background: var(--bg-soft);
   border-bottom: 1px solid var(--line);
-  transition: background .4s;
+  transition: background .5s ease-in-out, border-color .5s ease-in-out;
 }
-.card:hover .card__art { background: var(--white); }
 .card__art svg {
   width: 14.6rem;
   height: 10rem;
@@ -533,6 +553,7 @@ html.js .card.reveal:not(.is-in) .card__art :is(path, circle, line, rect) { stro
 
 .card__index {
   position: absolute;
+  z-index: 1;
   top: 1.6rem;
   left: 2rem;
   font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -543,6 +564,8 @@ html.js .card.reveal:not(.is-in) .card__art :is(path, circle, line, rect) { stro
 }
 
 .card__content {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -804,7 +827,11 @@ html.js .reveal--lines { opacity: 1; transform: none; transition: none; }
     border-color: var(--line-dark);
     box-shadow: 0 24px 48px rgba(0, 0, 0, .08);
   }
-  .card.is-focus .card__art { background: var(--white); }
+  .card.is-focus::before { opacity: 1; }
+  .card.is-focus .card__art {
+    background: transparent;
+    border-bottom-color: rgba(10, 10, 10, .06);
+  }
   .card.is-focus .card__art svg { transform: translateY(-3px) scale(1.03); }
 
   .step.is-focus {
@@ -825,10 +852,6 @@ html.js .reveal--lines { opacity: 1; transform: none; transition: none; }
 }
 
 @media (max-width: 860px) {
-  /* nav slips away scrolling down, returns scrolling up */
-  .nav { transition: transform .55s var(--e-expo); }
-  .nav.is-away { transform: translateY(-130%); }
-
   /* headline lines settle with a slight editorial rotation */
   html.js .line__in {
     transform: translateY(118%) rotate(2.5deg);

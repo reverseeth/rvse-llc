@@ -121,22 +121,13 @@
     window.requestAnimationFrame(pump);
   }
 
-  /* ── nav: floating pill + slip away on downward scroll ──── */
+  /* ── nav: transparent → floating pill ──────────────────── */
   var nav = document.getElementById('nav');
 
   if (nav) {
     var ticking = false;
-    var lastNavY = window.scrollY;
     var syncNav = function () {
-      var y = window.scrollY;
-      nav.classList.toggle('is-pill', y > 24);
-      var menuOpen = !document.getElementById('menu').hidden;
-      if (menuOpen || y < 260 || y < lastNavY - 2) {
-        nav.classList.remove('is-away');
-      } else if (y > lastNavY + 4) {
-        nav.classList.add('is-away');
-      }
-      lastNavY = y;
+      nav.classList.toggle('is-pill', window.scrollY > 24);
       ticking = false;
     };
     window.addEventListener('scroll', function () {
@@ -156,7 +147,6 @@
       toggle.setAttribute('aria-expanded', String(open));
       toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
       menu.hidden = !open;
-      if (open && nav) nav.classList.remove('is-away');
     };
 
     toggle.addEventListener('click', function () {
