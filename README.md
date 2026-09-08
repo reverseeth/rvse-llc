@@ -21,12 +21,13 @@ Set once in `:root` at the top of `styles.css`.
 
 - **Type** — Geist (body/display) + Geist Mono (labels, legal lines), via Google Fonts.
   Root is `62.5%`, so `1rem = 10px`.
-- **Palette** — cool slate neutrals: `--paper #f9fbfb`, `--paper-alt #f2f5f5`,
-  `--ink #233137`, `--ink-soft #5d767e`, `--muted #758084`, `--mist #9aaeb5`,
-  `--night #151d20`. No accent hue — the slate range carries everything.
-- **Geometry** — radii `4 / 8 / 12px`, pill buttons, 1px hairline rules.
-- **Motion** — `cubic-bezier(.19,1,.22,1)` (expo) for reveals and hovers.
-  Everything collapses under `prefers-reduced-motion: reduce`.
+- **Palette** — pure black + QOVES-style neutrals: `--black #000`, `--ink #0a0a0a`,
+  `--gray #515255`, canvas `--bg #f2f2f2`, hairlines `--line #e8e8e8`; on dark,
+  70% / 50% white. No accent hue.
+- **Geometry** — radii `8 / 12 / 16px`, pill buttons and pill nav, 1px hairlines.
+- **Motion** — expo `cubic-bezier(.19,1,.22,1)`: staggered line-mask headline
+  reveals, draw-on card artwork, nav that melts into a floating blurred pill on
+  scroll. Everything collapses under `prefers-reduced-motion: reduce`.
 
 ## Editing
 
